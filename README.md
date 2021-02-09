@@ -1,4 +1,4 @@
-# terramearth - implementation of terramearth case study
+# Terramearth - implementation of terramearth case study
 
 # Phase - 1
 
@@ -116,3 +116,82 @@ istryId=terramearth-registry --deviceId=dragline-100 --privateKeyFile=rsa_privat
 
 
 # Phase -3 
+
+1. Go to Bigquery console.
+
+2. Select your project and create a new dataset with following settings.
+   
+   Dataset Name - terramearh_dataset
+   
+   Default Location - asia-southeast1
+   
+   Default table expiration - None
+   
+   click on create.
+
+3. Select the dataset and create a new table with following settings.
+
+   Source - Empty table
+   
+   Table Name - terramearth_table
+   
+   Schema:
+   
+   registry:STRING,deviceID:STRING,deviceName:STRING,pressure:FLOAT,speed:INTEGER,engineUpTime:INTEGER,oilLevel:INTEGER,timestamp:TIMESTAMP
+
+   Leave Default setting and click on create.
+
+4. Now your Bigquery dataset and table is ready to get messages.
+
+
+5. Now create dataflow job from template. Goto Dataflow console.
+
+6. Click on Create job from template with following settings.
+
+Job name - terramearth-job
+
+Regional endpoint - asia-southeast1
+
+Dataflow template - pub/sub topic to BigQuery
+
+input pub/sub topic - projects/project-id/topics/terramearth-topic
+
+BigQuery output table - project-id:terramearth_dataset.terramearth_table
+
+
+Temporary location - gs://bucket-id/temp
+
+Max workers - 2
+
+Number of workers - 1
+
+Worker region - asia-southeast1
+
+Machine type - n1-standar-1
+
+Network - custom VPC 
+
+subnetwork - https://www.googleapis.com/compute/v1/projects/project-id/regions/asia-southeast1/subnetworks/subnet-id
+
+Note: Make sure you have subnet in asia-southeast1 otherwise job will fail.
+
+click on Run Job.
+
+
+5. Make sure your job is running successfully.
+
+6.  Send messages from cloud-shell.
+
+   node terramearth.js mqttDeviceDemo --projectId=$DEVSHELL_PROJECT_ID --cloudRegion=asia-east1 --registryId=terramearth-registry --deviceId=dragline-100 --privateKeyFile=rsa_private.pem --numMessages=10 --algorithm=RS256
+
+7. Wait for some time.
+
+8. Go to Bigquery and refresh.
+
+9. Check your table to see messages.
+
+10. You got messages from cloud iot core to Bigquery through Dataflow job successfully.
+
+You are ready for next phase now.
+
+
