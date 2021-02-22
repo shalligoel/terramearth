@@ -2,6 +2,8 @@
 
 # Phase - 1
 
+### Create a custom VPC with three subnets, one in usa, asia and Europe. Create appropriate firewall rules.
+
 1. Open Cloud-shell.
 
 2. Make your project as current project.
