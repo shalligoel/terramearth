@@ -33,6 +33,10 @@ Now your pub/sub topic is set.
 
 # Phase - 2
 
+### Create Service Account with pubsub admin and iot core admin and monitoring admin and logging admin Roles.
+
+### Create a VM with debian-9 OS and 10 GB Std Disk, f1-micro instance type. Use the service account for this VM or otherwise use all api scope.
+
 1. Create a public and private key for cloud iot core.
    
    mkdir ca
@@ -77,7 +81,7 @@ Now your pub/sub topic is set.
 
     leave default settings and clock on create.
 
-7.  Now, Install the required software on cloud-shell.
+7.  Now, Install the required software on VM.
 
     apt install git
 
@@ -113,7 +117,21 @@ istryId=terramearth-registry --deviceId=dragline-100 --privateKeyFile=rsa_privat
     gcloud pubsub subscriptions pull terramearth-sub --auto-ack
 
 
-11. If you can retrieve messages, means everything is set and ready for phase-3.
+11. If you can retrieve messages.
+12. Create a golden image from the disk
+13. Create two vm with this image. (same configuration as above) .
+
+sudo -s
+cd /terramearth
+ 
+node terramearth.js mqttDeviceDemo --projectId=$DEVSHELL_PROJECT_ID --cloudRegion=asia-east1 --reg
+istryId=terramearth-registry --deviceId=dragline-100 --privateKeyFile=rsa_private.pem --numMessages=2 --algorithm=RS256
+
+
+15.  three vm as simulator
+
+16.    
+17.      means everything is set and ready for phase-3.
 
 
 
